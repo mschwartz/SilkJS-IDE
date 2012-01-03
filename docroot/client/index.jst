@@ -1,0 +1,65 @@
+<!doctype html>
+<%
+	var ext = '/ext-3.4.0';
+	var codemirror = '/CodeMirror-2.2';
+	var codemirorModes = [
+		'xml',
+		'clike',
+		'diff',
+		'htmlembedded',
+		'htmlmixed',
+		'javascript',
+		'markdown'
+	];
+	var codemirrorThemes = [
+		'cobalt',
+		'eclipse',
+		'elegant',
+		'monokai',
+		'neat',
+		'night',
+		'rubyblue'
+	];
+	var client = [
+		'core/rpc.js',
+		'core/Ext.util.md5.js',
+		'core/Ext.ux.form.CodeMirror.js',
+		'ide/alert.js',
+		'ide/login.js',
+		'ide/register.js',
+		'ide/menubar.js',
+		'ide/home.js',
+		'ide/tree.js',
+		'ide/editor.js',
+		'ide/workspace.js',
+		'ide/viewport.js'
+	];
+%>
+<html>
+	<head>
+		<title>SilkJS IDE</title>
+		<link rel="stylesheet" type="text/css" href="<%= ext %>/resources/css/ext-all.css" />
+		<link rel="stylesheet" type="text/css" href="<%= codemirror %>/lib/codemirror.css" />
+		<% forEach(codemirrorThemes, function(theme) { %>
+		<link rel="stylesheet" type="text/css" href="<%= codemirror %>/theme/<%= theme %>.css" />
+		<% }); %>
+	</head>
+	<body>
+	<script type="text/javascript">
+		IDEConfig = {
+			CodeMirror: '<%= codemirror %>',
+			Themes: <%= Json.encode(codemirrorThemes) %>,
+			Modes: <%= Json.encode(codemirorModes) %>
+		};
+	</script>
+	<script type="text/javascript" src="<%= ext %>/adapter/ext/ext-base-debug.js"></script>
+	<script type="text/javascript" src="<%= ext %>/ext-all-debug.js"></script>
+	<script type="text/javascript" src="<%= codemirror %>/lib/codemirror.js"></script>
+	<% forEach(codemirorModes, function(mode) { %>
+	<script type="text/javascript" src="<%= codemirror %>/mode/<%= mode %>/<%= mode %>.js"></script>
+	<% }); %>
+	<% forEach(client, function(script) { %>
+	<script type="text/javascript" src="/client/<%= script %>"></script>
+	<% }); %>
+	</body>
+</html>
