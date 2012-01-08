@@ -9,7 +9,12 @@
 ProjectsService = ServiceRegistry.register('Projects', function() {
 	return {
 		treeData: function() {
-			Json.success(ProjectsManager.treeData({ userId: req.userId, nodeId: req.projectId }));
+			Json.success(ProjectsManager.treeData(req.projectId));
+		},
+		getFile: function() {
+			return Json.success({
+				body: fs.readFile(ProjectsManager.filePath(req.projectId, req.data.path))
+			});
 		}
 	};
 }());

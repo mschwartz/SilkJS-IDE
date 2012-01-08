@@ -28,87 +28,222 @@ ide.Tree = Ext.extend(Ext.tree.TreePanel, {
 				afterrender: function() {
 					me.refresh();
 				},
-				click: function(node) {
-
+				dblclick: function(node) {
+					var a = node.attributes;
+					switch (a.type) {
+						case 'file':
+							ide.Editor.open(a.fsPath);
+							break;
+					}
 				},
 				contextmenu: function(node, e) {
 					e.stopEvent();
+					var a = node.attributes;
+					var items = [];
+					switch (a.type) {
+						case 'project':
+							items.push({
+								text: 'Rename...',
+								handler: function() {
+
+								}
+							});
+							break;
+						case 'file':
+							items.push({
+								text: 'Open',
+								handler: function() {
+									ide.Editor.open(a.fsPath);
+								}
+							});
+							items.push({
+								text: 'Rename...',
+								handler: function() {
+
+								}
+							});
+							items.push({
+								text: 'Delete...',
+								handler: function() {
+
+								}
+							});
+							break;
+						case 'dir':
+							items.push({
+								text: 'New',
+								menu: [
+									{
+										text: 'Jst file...',
+										handler: function() {
+
+										}
+									},
+									{
+										text: 'Markdown file...',
+										handler: function() {
+
+										}
+									},
+									{
+										text: 'CSS file...',
+										handler: function() {
+
+										}
+									}
+								]
+							});
+							items.push({
+								text: 'Rename...',
+								handler: function() {
+
+								}
+							});
+							items.push({
+								text: 'Upload...',
+								handler: function() {
+
+								}
+							});
+							break;
+					}
+					var menu = new Ext.menu.Menu({
+						items: items
+					});
+					menu.showAt(e.getXY());
 				}
-			}
+			},
+			bbar: new Ext.Toolbar({
+				items: [
+					{
+						text: 'Refresh',
+						handler: function() {
+							me.refresh();
+						}
+					}
+				]
+			})
 		};
 		Ext.apply(this, Ext.apply(this.initialConfig, config));
 		ide.Tree.superclass.initComponent.apply(this, arguments);
+		me.refreshing = false;
 	},
 	refresh: function() {
 		var me = this;
-		var root = me.root;
-		while (root.firstChild) {
-			var c = root.firstChild;
-			root.removeChild(c);
-			c.destroy();
+		if (me.refreshing) {
+			return;
 		}
-		var client = new Ext.tree.TreeNode({
-			text: 'Client',
-			icon: '/img/famfam/folder.png',
-			leaf: false
-		});
-		root.appendChild(client);
-		var assets = new Ext.tree.TreeNode({
-			text: 'assets',
-			icon: '/img/famfam/folder.png',
-			leaf: false
-		});
-		client.appendChild(assets);
-		var stylesheets = new Ext.tree.TreeNode({
-			text: 'css',
-			icon: '/img/famfam/folder.png',
-			leaf: false
-		});
-		assets.appendChild(stylesheets);
-		var javascripts = new Ext.tree.TreeNode({
-			text: 'js',
-			icon: '/img/famfam/folder.png',
-			leaf: false
-		});
-		assets.appendChild(javascripts);
-		var images = new Ext.tree.TreeNode({
-			text: 'img',
-			icon: '/img/famfam/folder.png',
-			leaf: false
-		});
-		assets.appendChild(images);
-		var static = new Ext.tree.TreeNode({
-			text: 'static',
-			icon: '/img/famfam/folder.png',
-			leaf: false
-		});
-		assets.appendChild(static);
-
-		var server = new Ext.tree.TreeNode({
-			text: 'Server',
-			icon: '/img/famfam/folder.png',
-			leaf: false
-		});
-		root.appendChild(server);
-		var snippets = new Ext.tree.TreeNode({
-			text: 'Snippets',
-			icon: '/img/famfam/folder.png',
-			leaf: false
-		});
-		server.appendChild(snippets);
-		var pages = new Ext.tree.TreeNode({
-			text: 'Pages',
-			icon: '/img/famfam/folder.png',
-			leaf: false
-		});
-		server.appendChild(pages);
-		var page = new Ext.tree.TreeNode({
-			text: 'index.jst',
-			icon: '/img/famfam/page_white.png',
-			leaf: true
-		});
-		pages.appendChild(page);
-		root.expand(true);
+		me.refreshing = true;
+		me.disable();
+		rpc('Projects.treeData', {
+			params: {},
+			fn: function(o) {
+				var root = new Ext.tree.TreeNode({
+					text: o.title,
+					type: 'project',
+					icon: '/img/famfam/application.png',
+					leaf: o.children.length,
+					fsPath: '/'
+				});
+				function recurse(children, parent) {
+					children.sort(function(a,b) {
+						var alc = a.title.toLowerCase()
+						blc = b.title.toLowerCase();
+						if (alc === blc) {
+							return 0;
+						}
+						if (alc > blc) {
+							return 1;
+						}
+						return -1;
+					});
+					forEach(children, function(child) {
+						var node = new Ext.tree.TreeNode({
+							text: child.title,
+							type: child.type,
+							icon: child.type == 'dir' ? '/img/famfam/folder.png' : '/img/famfam/page_white.png',
+							leaf: child.children.length,
+							fsPath: child.fsPath
+						});
+						parent.appendChild(node);
+						recurse(child.children, node);
+					});
+				}
+				recurse(o.children, root);
+//				var root = me.root;
+//				while (root.firstChild) {
+//					var c = root.firstChild;
+//					root.removeChild(c);
+//					c.destroy();
+//				}
+//				root.setText(o.title);
+//				var client = new Ext.tree.TreeNode({
+//					text: 'Client',
+//					icon: '/img/famfam/folder.png',
+//					leaf: false
+//				});
+//				root.appendChild(client);
+//				var assets = new Ext.tree.TreeNode({
+//					text: 'assets',
+//					icon: '/img/famfam/folder.png',
+//					leaf: false
+//				});
+//				client.appendChild(assets);
+//				var stylesheets = new Ext.tree.TreeNode({
+//					text: 'css',
+//					icon: '/img/famfam/folder.png',
+//					leaf: false
+//				});
+//				assets.appendChild(stylesheets);
+//				var javascripts = new Ext.tree.TreeNode({
+//					text: 'js',
+//					icon: '/img/famfam/folder.png',
+//					leaf: false
+//				});
+//				assets.appendChild(javascripts);
+//				var images = new Ext.tree.TreeNode({
+//					text: 'img',
+//					icon: '/img/famfam/folder.png',
+//					leaf: false
+//				});
+//				assets.appendChild(images);
+//				var static = new Ext.tree.TreeNode({
+//					text: 'static',
+//					icon: '/img/famfam/folder.png',
+//					leaf: false
+//				});
+//				assets.appendChild(static);
+//
+//				var server = new Ext.tree.TreeNode({
+//					text: 'Server',
+//					icon: '/img/famfam/folder.png',
+//					leaf: false
+//				});
+//				root.appendChild(server);
+//				var snippets = new Ext.tree.TreeNode({
+//					text: 'Snippets',
+//					icon: '/img/famfam/folder.png',
+//					leaf: false
+//				});
+//				server.appendChild(snippets);
+//				var pages = new Ext.tree.TreeNode({
+//					text: 'Pages',
+//					icon: '/img/famfam/folder.png',
+//					leaf: false
+//				});
+//				server.appendChild(pages);
+//				var page = new Ext.tree.TreeNode({
+//					text: 'index.jst',
+//					icon: '/img/famfam/page_white.png',
+//					leaf: true
+//				});
+//				pages.appendChild(page);
+				me.setRootNode(root);
+				me.enable();
+				root.expand(true);
+				me.refreshing = false;
+			}
+		})
 	}
 });
 Ext.reg('ide-tree', ide.Tree);

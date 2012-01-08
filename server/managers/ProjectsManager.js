@@ -8,6 +8,9 @@
 
 ProjectsManager = (function() {
 	return {
+		filePath: function(projectId, relPath) {
+			return 'projects' + sprintf("%012d", projectId).replace(/(\d\d\d)/g, '/$1') + relPath;
+		},
 		putOne: function(example) {
 			example.type = 'Projects';
 			if (example.nodeId) {
@@ -22,17 +25,18 @@ ProjectsManager = (function() {
 		},
 		treeData: function(projectId) {
 			var project = Spine.findOne({ nodeId: projectId, type: 'Projects' });
-			var projectPath = 'projects/' + sprintf("%012d", project.nodeId).replace(/(\d\d\d)/g, '/$1');
+			var projectPath = 'projects' + sprintf("%012d", project.nodeId).replace(/(\d\d\d)/g, '/$1');
 			var data = {
 				type: 'project',
 				title: project.title,
 				children: []
 			};
 			function recurse(path, children) {
-				forEach(fs.readDir(path), function(entry) {
-					if (fs.isFile(entry)) {
+				forEach(fs.readDir(projectPath + path), function(entry) {
+					if (fs.isFile(projectPath + path + entry)) {
 						children.push({
 							type: 'file',
+							fsPath: path + entry,
 							title: entry,
 							children: []
 						});
@@ -40,15 +44,16 @@ ProjectsManager = (function() {
 					else {
 						var child = {
 							type: 'dir',
-							title: 'entry',
+							fsPath: path + entry,
+							title: entry,
 							children: []
 						};
 						children.push(child);
-						recurse(path+entry+'/', child.children);
+						recurse(path + entry + '/', child.children);
 					}
 				});
 			}
-			recurse(projectPath + '/', data.children);
+			recurse('/', data.children);
 			return data;
 		}
 	}

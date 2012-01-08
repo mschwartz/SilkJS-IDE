@@ -68,7 +68,7 @@ ide.LoginDialog = function() {
 								return;
 							}
 							dialog.close();
-							ide.openWorkspace();
+							ide.Workspace.open();
 						}
 					});
 				}

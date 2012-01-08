@@ -7,6 +7,7 @@
  */
 
 Ext.namespace('ide');
+
 Function.prototype.forEach = function(object, block, context, protos) {
 	if (object) {
 		var key;
@@ -74,6 +75,7 @@ if (!Array.prototype.forEach) {
 }
 
 Ext.onReady(function() {
+	Ext.QuickTips.init();
 	ide.viewport = new Ext.Viewport({
 		layout: 'card',
 		activeItem: 0,
@@ -89,5 +91,6 @@ Ext.onReady(function() {
 	ide.viewport.addCard = function(o) {
 		var card = ide.viewport.add(o);
 		ide.viewport.setCard(card);
+		return card;
 	};
 });

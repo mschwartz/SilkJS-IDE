@@ -112,6 +112,8 @@ Ext.ux.form.CodeMirror = Ext.extend(Ext.form.TextArea, {
 		this.addEvents('initialize');
 		this.on({
 			resize: function(ta, width, height) {
+//				console.log('resize');
+//				console.log(width + ' ' + height);
 				var el = this.el;
 //				var w = this.ownerCt.getWidth();
 //				var h = this.ownerCt.getHeight();

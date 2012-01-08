@@ -28,17 +28,16 @@ include('server/core/ServiceRegistry.js');
 include('server/core/schemas.js');
 include('server/core/Spine.js');
 
-include('server/managers/ProjectsManager.js');
-include('server/managers/UsersManager.js');
-include('server/managers/UserSessionsManager.js');
-include('server/services/UsersService.js');
-include('server/services/ProjectsService.js');
+silk.include('server/managers/ProjectsManager.js');
+silk.include('server/managers/UsersManager.js');
+silk.include('server/managers/UserSessionsManager.js');
+silk.include('server/services/UsersService.js');
+silk.include('server/services/ProjectsService.js');
 
 HttpChild.requestHandler = function() {
 	var user = UserSessionsManager.getCurrentUser();
 	req.userId = user.userId;
-	req.projectId = user.currentProjectId;
-	log(Util.print_r(user));
+	req.projectId = user.projectId;
 };
 
 function Service_action() {

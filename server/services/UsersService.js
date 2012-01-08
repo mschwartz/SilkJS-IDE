@@ -17,7 +17,6 @@ UsersService = ServiceRegistry.register('Users', function() {
 			}
 			var salt = UsersManager.generateSalt();
 			var hashedPassword = UsersManager.hashPassword(password, salt);
-			debug(hashedPassword);
 			UsersManager.putOne({
 				email: email,
 				password: hashedPassword,
@@ -31,8 +30,6 @@ UsersService = ServiceRegistry.register('Users', function() {
 			var user = UsersManager.findOne({ email: email });
 
 			var hashedPassword = UsersManager.hashPassword(password, user.salt);
-			debug(hashedPassword);
-			debug(user.password);
 			if (hashedPassword !== user.password) {
 				Json.failure();
 			}
