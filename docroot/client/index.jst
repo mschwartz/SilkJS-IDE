@@ -9,6 +9,7 @@
 		'htmlembedded',
 		'htmlmixed',
 		'javascript',
+		'coffeescript',
 		'markdown',
 		'css'
 	];
@@ -51,7 +52,8 @@
 		IDEConfig = {
 			CodeMirror: '<%= codemirror %>',
 			Themes: <%= Json.encode(codemirrorThemes) %>,
-			Modes: <%= Json.encode(codemirorModes) %>
+			Modes: <%= Json.encode(codemirorModes) %>,
+			User: <%= Json.encode(req.user) %>
 		};
 	</script>
 	<script type="text/javascript" src="<%= ext %>/adapter/ext/ext-base-debug.js"></script>

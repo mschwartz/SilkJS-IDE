@@ -102,6 +102,15 @@ ide.Editor.open = function(path) {
 	ide.Workspace.setCard(ide.editors[path]);
 };
 
+ide.Editor.rename = function(oldPath, newPath) {
+	var tab = ide.editors[oldPath];
+	if (tab) {
+		delete ide.editors[oldPath];
+		ide.editors.newPath = tab;
+		tab.setTitle(newPath.split('/').pop());
+	}
+};
+
 ide.setTheme = function(theme) {
 	forEach(ide.editors, function(editor) {
 		editor.setOption('theme', theme);

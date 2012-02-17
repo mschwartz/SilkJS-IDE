@@ -35,7 +35,7 @@ silk.include('server/services/UsersService.js');
 silk.include('server/services/ProjectsService.js');
 
 HttpChild.requestHandler = function() {
-	var user = UserSessionsManager.getCurrentUser();
+	var user = req.user = UserSessionsManager.getCurrentUser();
 	req.userId = user.userId;
 	req.projectId = user.projectId;
 };

@@ -93,4 +93,7 @@ Ext.onReady(function() {
 		ide.viewport.setCard(card);
 		return card;
 	};
+	if (IDEConfig.User.userId) {
+		ide.Workspace.open();
+	}
 });

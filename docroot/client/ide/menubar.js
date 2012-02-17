@@ -113,6 +113,17 @@ ide.MenuBar = Ext.extend(Ext.Toolbar, {
 					menu: [
 					]
 				},
+				{
+					text: 'Documentation',
+					menu: [
+						{
+							text: 'Ext 3.4.0',
+							handler: function() {
+								window.open('/ext-3.4.0/docs/');
+							}
+						}
+					]
+				},
 				'->',
 				'Theme: ',
 				{

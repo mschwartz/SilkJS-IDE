@@ -13,7 +13,7 @@ ide.Tree = Ext.extend(Ext.tree.TreePanel, {
 		var me = this;
 		var config = {
 			title: 'Project',
-			animate: true,
+			animate: false,
 			useArrows: true,
 			autoScroll: true,
 			rootVisible: true,
@@ -59,13 +59,66 @@ ide.Tree = Ext.extend(Ext.tree.TreePanel, {
 							items.push({
 								text: 'Rename...',
 								handler: function() {
-
+									console.dir(a);
+									Ext.MessageBox.prompt('Rename ' + a.text, 'New filename', function(btn, fn) {
+										if (btn == 'ok') {
+											var oldPath = a.fsPath;
+											var newPath = oldPath.split('/');
+											var oldName = newPath.pop();
+											var extension = oldName.split('.').pop();
+											if (fn.indexOf('.') == -1) {
+												fn += '.' + extension;
+											}
+											else {
+												fn = fn.split('.');
+												var newExtension = fn.pop();
+												fn = fn.join('.');
+												if (newExtension != extension) {
+													fn += '.' + extension;
+												}
+											}
+											newPath.push(fn);
+											newPath = newPath.join('/');
+											rpc('Projects.renameFile', {
+												params: {
+													oldPath: a.fsPath,
+													newPath: newPath
+												},
+												fn: function(o) {
+													if (!o.success) {
+														ide.ErrorDialog(o.message);
+													}
+													else {
+														ide.Editor.rename(oldPath, newPath);
+													}
+													me.refresh();
+												}
+											});
+										}
+									});
 								}
 							});
 							items.push({
 								text: 'Delete...',
 								handler: function() {
-
+									console.dir(a);
+									Ext.MessageBox.confirm('Are you sure?', 'Delete file ' + a.text, function(btn) {
+										if (btn === 'yes') {
+											rpc('Projects.deleteFile', {
+												params: {
+													path: a.fsPath
+												},
+												fn: function(o) {
+													if (o.success) {
+														node.remove(true);
+													}
+													else {
+														ide.ErrorDialog(o.message);
+													}
+												}
+											});
+										}
+									});
 								}
 							});
 							break;
@@ -75,6 +128,32 @@ ide.Tree = Ext.extend(Ext.tree.TreePanel, {
 								menu: [
 									{
 										text: 'Jst file...',
+										handler: function() {
+											console.dir(a);
+											Ext.MessageBox.prompt('New Jst file', 'File name', function(btn, fn) {
+												if (btn == 'ok') {
+													fn = fn.replace(/\.jst$/i, '') + '.jst';
+													rpc('Projects.putFile', {
+														params: {
+															create: true,
+															path: a.fsPath + '/' + fn,
+															content: ''
+														},
+														fn: function(o) {
+															if (o.success) {
+																me.refresh();
+															}
+															else {
+																ide.ErrorDialog(o.message);
+															}
+														}
+													});
+												}
+											});
+										}
+									},
+									{
+										text: 'CoffeScript file...',
 										handler: function() {
 
 										}

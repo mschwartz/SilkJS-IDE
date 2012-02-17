@@ -17,7 +17,7 @@
 function rpc(method, config) {
 	config = config || {};
 	if (config.mask) {
-		pwp.ShowLoadingMask(config.mask);
+		ide.Workspace.showLoadingMask(config.mask);
 	}
 	Ext.Ajax.request({
 		method: 'POST',
@@ -25,7 +25,7 @@ function rpc(method, config) {
 		params: Ext.apply(config.params || {}, { method: method }),
 		success: function(response) {
 			if (config.mask) {
-				pwp.HideLoadingMask();
+				ide.Workspace.hideLoadingMask();
 			}
 			config.fn && config.fn(Ext.decode(response.responseText));
 		}

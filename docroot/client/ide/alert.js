@@ -54,3 +54,7 @@ ide.AlertDialog = function(title, text) {
 	dialog.setHeight(height);
 	dialog.center();
 };
+
+ide.ErrorDialog = function(text) {
+	ide.AlertDialog('Error', text);
+};
