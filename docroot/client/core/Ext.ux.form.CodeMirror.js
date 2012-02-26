@@ -20,6 +20,9 @@ Ext.ux.form.CodeMirror = Ext.extend(Ext.form.TextArea, {
 			case 'css':
 				mode = 'css';
 				break;
+            case 'less':
+                mode = 'text/less';
+                break;
 			case 'js':
 				mode = 'text/javascript';
 				break;
@@ -34,6 +37,9 @@ Ext.ux.form.CodeMirror = Ext.extend(Ext.form.TextArea, {
 			case 'jst':
 				mode = 'application/x-ejs';
 				break;
+            case 'coffee':
+                mode = 'coffeescript';
+                break;
 			default:
 				mode = 'text/plain';
 				break;
@@ -44,7 +50,45 @@ Ext.ux.form.CodeMirror = Ext.extend(Ext.form.TextArea, {
 		me.hlLine = null;
 		this.codeEditor = CodeMirror.fromTextArea(Ext.get(this.id).dom, {
 			value: me.initialConfig.value,
-//			saveFunction: pwp.KeyMapSaveFn,
+            extraKeys: {
+                'Ctrl-S': function(cm) { alert('save'); },
+                'Ctrl-E': function(cm) {
+                    var start = cm.getCursor(true), end = cm.getCursor(false);
+                    var l = cm.getCursor();
+                    if (start.ch === end.ch && start.line === end.line) {
+                        start = {
+                            line: l.line,
+                            ch: 0
+                        };
+                        end = {
+                            line: l.line+1,
+                            ch: 0
+                        }
+                    }
+                    else {
+                        start.ch = end.ch = 0;
+                    }
+                    cm.replaceRange('', start, end);
+//                    CodeMirror.commands.deleteLine(instance);
+                },
+                'Ctrl-D': function(cm) {
+                    var start = cm.getCursor(true), end = cm.getCursor(false);
+                    var l = cm.getCursor();
+                    if (start.ch === end.ch && start.line === end.line) {
+                        start = {
+                            line: l.line,
+                            ch: 0
+                        };
+                        end = {
+                            line: l.line+1,
+                            ch: 0
+                        }
+                    }
+                    var selection = cm.getRange(start, end);
+                    cm.replaceRange(selection+selection, start, end);
+                    cm.setCursor(l.line+1, l.ch);
+                }
+            },
 			mode: mode,
 			path: this.codeMirrorPath + '/js/',
 			textWrapping: false,
@@ -157,6 +201,9 @@ Ext.ux.form.CodeMirror = Ext.extend(Ext.form.TextArea, {
 		}
 		this.value = v;
 	},
+    clearHistory: function() {
+        this.codeEditor && this.codeEditor.clearHistory();
+    },
 	setOption: function(option, value) {
 		this.codeEditor && this.codeEditor.setOption(option, value);
 	},

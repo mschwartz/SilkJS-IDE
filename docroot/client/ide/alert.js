@@ -8,6 +8,17 @@
 
 Ext.namespace('ide');
 
+ide.Notify = function(msg, title) {
+	title = title || 'Notification';
+	Ext.gritter.add({
+		title: title,
+		text: msg,
+		image: '/img/big_info.png',
+		sticky: false,
+		time: 2000
+	});
+};
+
 ide.AlertDialog = function(title, text) {
 	var content = new Ext.Panel({
 		preventBodyReset: true,

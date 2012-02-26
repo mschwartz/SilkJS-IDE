@@ -19,8 +19,6 @@ ProjectsService = ServiceRegistry.register('Projects', function() {
 		putFile: function() {
 			var realPath = ProjectsManager.filePath(req.projectId, req.data.path);
 
-			console.dir(req.data);
-
 			if (req.data.create) {
 				if (fs.exists(realPath)) {
 					Json.failure('File already exists');

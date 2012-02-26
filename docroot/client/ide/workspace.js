@@ -26,6 +26,7 @@ ide.Workspace = Ext.extend(Ext.Panel, {
 					region: 'west',
 					split: true,
 					width: 200,
+                    id: 'ide-tree',
 					xtype: 'ide-tree'
 				},
 				{
