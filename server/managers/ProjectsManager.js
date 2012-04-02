@@ -6,7 +6,14 @@
  * To change this template use File | Settings | File Templates.
  */
 
-ProjectsManager = (function() {
+/*global exports */
+"use strict";
+
+var ProjectsManager = (function() {
+    var fs = require('fs'),
+        phpjs = require('phpjs'),
+        sprintf = phpjs.sprintf;
+
 	return {
 		filePath: function(projectId, relPath) {
 			return 'projects' + sprintf("%012d", projectId).replace(/(\d\d\d)/g, '/$1') + relPath;
@@ -58,3 +65,7 @@ ProjectsManager = (function() {
 		}
 	}
 }());
+
+if (exports) {
+    exports = ProjectsManager;
+}

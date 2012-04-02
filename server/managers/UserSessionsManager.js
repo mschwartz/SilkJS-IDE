@@ -6,7 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 
-UserSessionsManager = (function() {
+"use strict";
+
+var UserSessionsManager = (function() {
 	return {
 		getCurrentUser: function() {
 			var now = Util.currentTime();
@@ -46,3 +48,7 @@ UserSessionsManager = (function() {
 		}
 	}
 }());
+
+if (exports) {
+    exports = UserSessionsManager;
+}

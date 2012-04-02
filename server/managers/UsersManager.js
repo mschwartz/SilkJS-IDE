@@ -6,7 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 
-UsersManager = (function() {
+"use strict";
+
+var UsersManager = (function() {
 	return {
 		findOne: function(example) {
 			return Schema.findOne('Users', example);
@@ -29,3 +31,7 @@ UsersManager = (function() {
 		}
 	};
 }());
+
+if (exports) {
+    exports = UsersManager;
+}

@@ -6,7 +6,12 @@
  * To change this template use File | Settings | File Templates.
  */
 
-ProjectsService = ServiceRegistry.register('Projects', function() {
+"use strict";
+
+ServiceRegistry.register('Projects', function() {
+    var Json = require('Json'),
+        fs = require('fs'),
+        ProjectsManager = require('managers/ProjectsManager');
 	return {
 		treeData: function() {
 			Json.success(ProjectsManager.treeData(req.projectId));

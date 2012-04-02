@@ -12,10 +12,12 @@
 /*global global: true, res: true, req: true, app: true, session: true */
 /*global Schema: true, Util: true */
 
+"use strict";
+
 /**
  * @namespace
  */
-Spine = function() {
+var Spine = function() {
 	"use strict";
 
 	/** @scope Spine */
@@ -289,3 +291,7 @@ Spine = function() {
 	};
 
 }();
+
+if (exports) {
+    exports = Spine;
+}

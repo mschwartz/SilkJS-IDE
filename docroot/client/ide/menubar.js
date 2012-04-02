@@ -104,7 +104,16 @@ ide.MenuBar = Ext.extend(Ext.Toolbar, {
 					menu: [
 						{
 							text: 'Commit File...'
-						}
+						},
+                        '-',
+                        {
+                            text: 'Account Info',
+                            handler: ide.GitHubPropertiesDialog
+                        },
+                        {
+                            text: 'Configure...',
+                            handler: ide.GitHubSettingsDialog
+                        }
 					]
 				},
 				' ',

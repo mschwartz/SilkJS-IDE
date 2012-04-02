@@ -24,6 +24,7 @@ Ext.ux.form.CodeMirror = Ext.extend(Ext.form.TextArea, {
                 mode = 'text/less';
                 break;
 			case 'js':
+            case 'sjs':
 				mode = 'text/javascript';
 				break;
 			case 'php':

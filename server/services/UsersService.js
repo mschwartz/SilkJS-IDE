@@ -6,7 +6,11 @@
  * To change this template use File | Settings | File Templates.
  */
 
-UsersService = ServiceRegistry.register('Users', function() {
+"use strict";
+
+ServiceRegistry.register('Users', function() {
+    var Json = require('Json');
+
 	return {
 		register: function() {
 			var email = req.data.email;

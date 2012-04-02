@@ -6,8 +6,12 @@
  * To change this template use File | Settings | File Templates.
  */
 (function() {
+    var MySQL = require('MySQL'),
+        Schema = require('Schema');
+
 	SQL = new MySQL();
 	SQL.connect();
+
 	function IP() {
 		return (global.req && req.remote_addr) ? req.remote_addr : '127.0.0.1';
 	}
@@ -61,6 +65,16 @@
 		engine: 'memory',
 		primaryKey: 'cookie'
 	});
+
+    Schema.add({
+        name: 'GitHubAccounts',
+        fields: [
+            { name: 'userId', type: 'int' },
+            { name: 'username', type: 'varchar', size: 255 },
+            { name: 'password', type: 'varchar', size: 255 }
+        ],
+        primaryKey: 'userId'
+    });
 
 	Schema.add({
 		name: 'Nodes',

@@ -145,7 +145,13 @@ ide.Tree = Ext.extend(Ext.tree.TreePanel, {
                                 icon: ide.icons.new,
                                 menu: [
                                     {
-                                        text: 'Jst file...',
+                                        text: 'SJS file...',
+                                        handler: function() {
+                                            me.newFile('New SJS File', function(fn) { return a.fsPath + '/' + fn.replace(/\.sjs$/i, '') + '.sjs'});
+                                        }
+                                    },
+                                    {
+                                        text: 'JST file...',
                                         handler: function() {
                                             me.newFile('New Jst File', function(fn) { return a.fsPath + '/' + fn.replace(/\.jst$/i, '') + '.jst'});
                                         }

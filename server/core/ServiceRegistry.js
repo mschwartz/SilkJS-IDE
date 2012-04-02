@@ -5,6 +5,9 @@
  * Time: 10:21 AM
  * To change this template use File | Settings | File Templates.
  */
+
+"use strict";
+
 /**
  * @fileoverview
  *
@@ -12,7 +15,7 @@
  */
 
 /** @class ServiceRegistry */
-ServiceRegistry = function() {
+var ServiceRegistry = function() {
 	/** @private */
 	var services = {};
 	/** @scope ServiceRegistry */
@@ -30,7 +33,7 @@ ServiceRegistry = function() {
 		 *
 		 * @param {string} method (e.g. Asset.list)
 		 * @returns {void} nothing - method will typically generate Json output and exit
-		 * @throws {NoSuchService} If the requested service is not registered.
+		 * @throws {string} If the requested service is not registered.
 		 */
 		invoke: function(method) {
 			res.data.isService = true;
@@ -46,3 +49,7 @@ ServiceRegistry = function() {
 		}
 	};
 }();
+
+if (exports) {
+    exports = ServiceRegistry;
+}
