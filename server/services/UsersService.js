@@ -8,6 +8,9 @@
 
 "use strict";
 
+var UsersManager = require('managers/UsersManager').UsersManager,
+    UserSessionsManager = require('managers/UserSessionsManager').UserSessionsManager;
+
 ServiceRegistry.register('Users', function() {
     var Json = require('Json');
 

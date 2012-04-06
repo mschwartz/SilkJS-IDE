@@ -67,5 +67,5 @@ var ProjectsManager = (function() {
 }());
 
 if (exports) {
-    exports = ProjectsManager;
+    exports.ProjectsManager = ProjectsManager;
 }

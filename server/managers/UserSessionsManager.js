@@ -8,6 +8,10 @@
 
 "use strict";
 
+/*global SQL */
+
+var UsersManager = require('managers/UsersManager').UsersManager;
+
 var UserSessionsManager = (function() {
 	return {
 		getCurrentUser: function() {
@@ -50,5 +54,5 @@ var UserSessionsManager = (function() {
 }());
 
 if (exports) {
-    exports = UserSessionsManager;
+    exports.UserSessionsManager = UserSessionsManager;
 }

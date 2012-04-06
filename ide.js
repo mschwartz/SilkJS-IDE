@@ -42,8 +42,6 @@ var Constants = require('core/constants'),
 //include('server/services/UsersService.js');
 //include('server/services/ProjectsService.js');
 
-var UserSessionsManager = require('managers/UserSessionsManager');
-
 var GitHubService = require('services/GitHubService'),
     ProjectsService = require('services/ProjectsService'),
     UsersService = require('services/UsersService');
@@ -53,7 +51,9 @@ var phpjs = require('phpjs'),
     sprintf = phpjs.sprintf;
 
 HttpChild.requestHandler = function() {
-	var user = req.user = UserSessionsManager.getCurrentUser();
+    var UserSessionsManager = require('managers/UserSessionsManager').UserSessionsManager;
+
+    var user = req.user = UserSessionsManager.getCurrentUser();
 	req.userId = user.userId;
 	req.projectId = user.projectId;
 };

@@ -8,6 +8,8 @@
 
 "use strict";
 
+var ProjectsManager = require('managers/ProjectsManager').ProjectsManager;
+
 var UsersManager = (function() {
 	return {
 		findOne: function(example) {
@@ -33,5 +35,5 @@ var UsersManager = (function() {
 }());
 
 if (exports) {
-    exports = UsersManager;
+    exports.UsersManager = UsersManager;
 }

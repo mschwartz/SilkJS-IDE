@@ -7,6 +7,7 @@
  */
 (function() {
     var MySQL = require('MySQL'),
+        UsersManager = require('managers/UsersManager').UsersManager,
         Schema = require('Schema');
 
 	SQL = new MySQL();

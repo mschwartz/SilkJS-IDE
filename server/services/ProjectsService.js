@@ -11,7 +11,7 @@
 ServiceRegistry.register('Projects', function() {
     var Json = require('Json'),
         fs = require('fs'),
-        ProjectsManager = require('managers/ProjectsManager');
+        ProjectsManager = require('managers/ProjectsManager').ProjectsManager;
 	return {
 		treeData: function() {
 			Json.success(ProjectsManager.treeData(req.projectId));
